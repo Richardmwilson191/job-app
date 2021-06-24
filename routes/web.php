@@ -30,14 +30,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    // Route::get('/post-job', function () {
-    //     return Inertia::render('PostJob');
-    // })->name('post-job');
+    Route::resource('users', UserController::class);
 
-    Route::resource('/jobs', JobPostsController::class);
+    Route::resource('jobs', JobPostsController::class);
 });
-
-
-
-
-// Route::middleware(['auth:sanctum', 'verified'])->get('')

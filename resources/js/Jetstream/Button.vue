@@ -6,6 +6,7 @@
       items-center
       px-4
       py-2
+      mt-2
       bg-gray-800
       border border-transparent
       rounded-md
@@ -34,5 +35,5 @@ export default {
       default: "submit",
     },
   },
-};
+}
 </script>

@@ -20,8 +20,9 @@ class CreateJobPostsTable extends Migration
             $table->integer('job_type');
             $table->text('description');
             $table->bigInteger('job_location_id');
-            $table->char('is_active', 1);
-            $table->timestamps();
+            $table->char('is_active', 1)->default('y');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 

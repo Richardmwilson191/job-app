@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\JobPostsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,19 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+
+    // Route::get('/post-job', function () {
+    //     return Inertia::render('PostJob');
+    // })->name('post-job');
+
+    Route::resource('/jobs', JobPostsController::class);
+});
+
+
+
+
+// Route::middleware(['auth:sanctum', 'verified'])->get('')

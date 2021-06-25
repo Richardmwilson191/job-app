@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import Button from "@/Jetstream/Button";
+import Button from "@/Jetstream/Button"
 
 export default {
   components: {
@@ -83,7 +83,7 @@ export default {
   },
   data() {
     return {
-      jobpost: {
+      jobpost: this.$inertia.form({
         title: "",
         jobtype: "accountant",
         options: [
@@ -97,16 +97,16 @@ export default {
         city: "",
         state: "",
         street: "",
-      },
-    };
+      }),
+    }
   },
   methods: {
     addJobPost() {
-      this.$inertia.post("/jobs", this.jobpost);
-      console.log("test");
+      this.$inertia.post("/jobs", this.jobpost)
+      console.log("test")
     },
   },
-};
+}
 </script>
 
 <style>

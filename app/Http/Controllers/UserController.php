@@ -9,25 +9,33 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
-class UsersController extends Controller
+
+
+class UserController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $users = User::with('roles')->get();
 
-        return view('users.index', compact('users'));
+        return Inertia::render('Users/Index', [
+            'users' => $users,
+        ]);
     }
 
     public function create()
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $roles = Role::pluck('title', 'id');
 
-        return view('users.create', compact('roles'));
+        return Inertia::render('Users/Create', [
+            'roles' => $roles,
+        ]);
     }
 
     public function store(StoreUserRequest $request)
@@ -35,25 +43,29 @@ class UsersController extends Controller
         $user = User::create($request->validated());
         $user->roles()->sync($request->input('roles', []));
 
-        return redirect()->route('users.index');
+        return Inertia::render('Users/Index');
+        // return redirect()->route('users.index');
     }
 
     public function show(User $user)
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('users.show', compact('user'));
+        return Inertia::render('Users/Show');
     }
 
     public function edit(User $user)
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $roles = Role::pluck('title', 'id');
 
         $user->load('roles');
 
-        return view('users.edit', compact('user', 'roles'));
+        return Inertia::render('Users/Edit', [
+            'roles' => $roles,
+            'user' => $user,
+        ]);
     }
 
     public function update(UpdateUserRequest $request, User $user)
@@ -66,10 +78,11 @@ class UsersController extends Controller
 
     public function destroy(User $user)
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $user->delete();
 
-        return redirect()->route('users.index');
+        return Inertia::render('Users/Index');
+        // return redirect()->route('users.index');
     }
 }

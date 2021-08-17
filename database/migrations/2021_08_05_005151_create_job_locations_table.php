@@ -14,11 +14,11 @@ class CreateJobLocationsTable extends Migration
     public function up()
     {
         Schema::create('job_locations', function (Blueprint $table) {
-            $table->id();
+            $table->foreignId('job_post_id');
             $table->string('street_address');
-            $table->string('city', 128);
-            $table->string('state', 128);
-            $table->string('country', 128);
+            $table->foreignId('city')->constrained('cities');
+            $table->foreignId('state')->constrained('states');
+            $table->foreignId('country')->constrained('countries');
         });
     }
 

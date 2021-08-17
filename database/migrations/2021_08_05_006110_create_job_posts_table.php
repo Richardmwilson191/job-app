@@ -16,10 +16,10 @@ class CreateJobPostsTable extends Migration
         Schema::create('job_posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->bigInteger('posted_by_id');
-            $table->integer('job_type');
+            $table->foreignId('posted_by_id')->constrained('users');
+            $table->foreignId('job_category_id')->constrained('job_categories');
+            $table->string('employment_type')->nullable();
             $table->text('description');
-            $table->bigInteger('job_location_id');
             $table->char('is_active', 1)->default('y');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();

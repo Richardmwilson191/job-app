@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+  <dashboard>
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
         Create new user
@@ -12,7 +12,7 @@
           <div>
             <div class="max-w-4xl mx-auto py-10 sm:px-6 lg:px-8">
               <div class="mt-5 md:mt-0 md:col-span-2">
-                <form method="post">
+                <form method="post" @submit.prevent="submit">
                   <div class="shadow overflow-hidden sm:rounded-md">
                     <div class="px-4 py-5 bg-white sm:p-6">
                       <label
@@ -32,9 +32,11 @@
                           block
                           w-full
                         "
-                        value="{{ old('name', '') }}"
+                        v-model="form.name"
                       />
-                      <p class="text-sm text-red-600">{{ $message }}</p>
+                      <p v-if="form.errors.name" class="text-sm text-red-600">
+                        {{ form.errors.name }}
+                      </p>
                     </div>
 
                     <div class="px-4 py-5 bg-white sm:p-6">
@@ -55,11 +57,11 @@
                           block
                           w-full
                         "
-                        value="{{ old('email', '') }}"
+                        v-model="form.email"
                       />
-                      @error('email')
-                      <p class="text-sm text-red-600">{{ $message }}</p>
-                      @enderror
+                      <p v-if="form.errors.email" class="text-sm text-red-600">
+                        {{ form.errors.email }}
+                      </p>
                     </div>
 
                     <div class="px-4 py-5 bg-white sm:p-6">
@@ -80,17 +82,21 @@
                           block
                           w-full
                         "
+                        v-model="form.password"
                       />
-                      @error('password')
-                      <p class="text-sm text-red-600">{{ $message }}</p>
-                      @enderror
+                      <p
+                        v-if="form.errors.password"
+                        class="text-sm text-red-600"
+                      >
+                        {{ form.errors.password }}
+                      </p>
                     </div>
 
                     <div class="px-4 py-5 bg-white sm:p-6">
                       <label
                         for="roles"
                         class="block font-medium text-sm text-gray-700"
-                        >Roles</label
+                        >Role</label
                       >
                       <select
                         name="roles[]"
@@ -104,7 +110,7 @@
                           block
                           w-full
                         "
-                        multiple="multiple"
+                        v-model="form.role"
                       >
                         <option
                           v-for="(role, index) in roles"
@@ -114,9 +120,9 @@
                           {{ role }}
                         </option>
                       </select>
-                      @error('roles')
-                      <p class="text-sm text-red-600">{{ $message }}</p>
-                      @enderror
+                      <p v-if="form.errors.role" class="text-sm text-red-600">
+                        {{ form.errors.role }}
+                      </p>
                     </div>
 
                     <div
@@ -166,18 +172,33 @@
         </div>
       </div>
     </div>
-  </app-layout>
+  </dashboard>
 </template>
 
 <script>
-import AppLayout from "@/Layouts/AppLayout"
+import Dashboard from "@/Pages/Admin/Dashboard"
 export default {
   components: {
-    AppLayout,
+    Dashboard,
   },
   name: "roles",
   props: {
     roles: Object,
+  },
+  data() {
+    return {
+      form: this.$inertia.form({
+        username: "",
+        email: "",
+        password: "",
+        role: "",
+      }),
+    }
+  },
+  methods: {
+    submit() {
+      this.$inertia.post("/users", this.form)
+    },
   },
 }
 </script>

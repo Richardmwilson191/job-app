@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+  <dashboard>
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
         Manage Users
@@ -243,14 +243,14 @@
         </div>
       </div>
     </div>
-  </app-layout>
+  </dashboard>
 </template>
 
 <script>
-import AppLayout from "@/Layouts/AppLayout"
+import Dashboard from "@/Pages/Admin/Dashboard"
 
 export default {
-  components: { AppLayout },
+  components: { Dashboard },
   name: "Users",
   props: {
     users: Object,

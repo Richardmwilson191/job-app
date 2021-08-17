@@ -14,12 +14,8 @@ class CreateSkillListsTable extends Migration
     public function up()
     {
         Schema::create('skill_lists', function (Blueprint $table) {
-            $table->id();
-            $table->integer('id_1')->nullable();
-            $table->integer('id_2')->nullable();
-            $table->integer('id_3')->nullable();
-            $table->integer('id_4')->nullable();
-            $table->integer('id_5')->nullable();
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('skill_id')->constrained('skills');
             $table->timestamps();
         });
     }

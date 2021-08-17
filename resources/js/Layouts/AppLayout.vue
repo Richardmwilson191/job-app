@@ -36,10 +36,11 @@
                   Post A Job
                 </jet-nav-link>
                 <jet-nav-link
-                  :href="route('users.index')"
-                  :active="route().current('users.index')"
+                  v-if="$page.props.user.role === 'admin'"
+                  :href="route('admin.dashboard')"
+                  :active="route().current('admin.dashboard')"
                 >
-                  Users
+                  Admin
                 </jet-nav-link>
               </div>
             </div>

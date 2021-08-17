@@ -14,10 +14,9 @@ class CreateJobApplicationActivitiesTable extends Migration
     public function up()
     {
         Schema::create('job_application_activities', function (Blueprint $table) {
-            $table->integer('user_id');
-            $table->integer('job_post_id');
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('job_post_id')->constrained('job_posts');
             $table->timestamp('application_date');
-            $table->timestamps();
             $table->unique(array('user_id', 'job_post_id'), 'uc_job_application');
         });
     }

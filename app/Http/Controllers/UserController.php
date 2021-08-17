@@ -19,10 +19,10 @@ class UserController extends Controller
     public function index()
     {
         // abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // ddd(Auth::user());
+        $users = User::all();
 
-        $users = User::with('roles')->get();
-
-        return Inertia::render('Users/Index', [
+        return Inertia::render('Admin/Users/Index', [
             'users' => $users,
         ]);
     }
@@ -33,17 +33,22 @@ class UserController extends Controller
 
         $roles = Role::pluck('title', 'id');
 
-        return Inertia::render('Users/Create', [
+        return Inertia::render('Admin/Users/Create', [
             'roles' => $roles,
         ]);
     }
 
     public function store(StoreUserRequest $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|unique:users|email',
+            'password' => 'required|min:8|',
+        ]);
         $user = User::create($request->validated());
-        $user->roles()->sync($request->input('roles', []));
+        $user->roles()->sync($request->input('role', []));
 
-        return Inertia::render('Users/Index');
+        return Inertia::render('Admin/Users/Index');
         // return redirect()->route('users.index');
     }
 
@@ -51,7 +56,7 @@ class UserController extends Controller
     {
         // abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return Inertia::render('Users/Show');
+        return Inertia::render('Admin/Users/Show');
     }
 
     public function edit(User $user)
@@ -62,7 +67,7 @@ class UserController extends Controller
 
         $user->load('roles');
 
-        return Inertia::render('Users/Edit', [
+        return Inertia::render('Admin/Users/Edit', [
             'roles' => $roles,
             'user' => $user,
         ]);
@@ -82,7 +87,7 @@ class UserController extends Controller
 
         $user->delete();
 
-        return Inertia::render('Users/Index');
+        return Inertia::render('Admin/Users/Index');
         // return redirect()->route('users.index');
     }
 }

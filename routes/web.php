@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\JobCategoriesController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\JobPostsController;
+use App\Http\Controllers\SkillsController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -26,12 +28,20 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified', 'restrictRole'])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
+    Route::get('admin/dashboard', function () {
+        return Inertia::render('Admin/Dashboard');
+    })->name('admin.dashboard');
+
     Route::resource('users', UserController::class);
 
     Route::resource('jobs', JobPostsController::class);
+
+    Route::resource('categories', JobCategoriesController::class)->except(['show']);
+
+    Route::resource('skills', SkillsController::class)->except(['show']);
 });
